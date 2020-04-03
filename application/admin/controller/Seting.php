@@ -25,6 +25,7 @@ class Seting extends Byse
         }else{
             return ['code'=>0,'info'=>'设置错误'];
         }
+        
     }
    
 }
