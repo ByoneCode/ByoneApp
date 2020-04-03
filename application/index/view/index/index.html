@@ -1,0 +1,18 @@
+{include file="public/seo"}
+{include file="public/header"}
+<div class="card">
+{volist name="app_list" id="vo"}
+<div class="mdui-card mdui-hoverable" onclick="location.href='{$vo.url}?id={$vo.id}'">
+    <div class="mdui-card-media">
+        <img src="{$vo.img|default='//bokel.hl-5.com/random/index.php'}" />
+        <div class="mdui-card-media-covered">
+            <div class="mdui-card-primary">
+                <div class="mdui-card-primary-title">{$vo.title}</div>
+                <div class="mdui-card-primary-subtitle">{$vo.subtitle}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{/volist}
+</div>
+{include file="public/footer"}

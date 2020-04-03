@@ -1,0 +1,28 @@
+{include file="public/seo"}
+
+<form method="post">
+<input type="text" name="user">
+<input type="text" name="content">
+<input type="text" name="time">
+<input type="button" value="提交" class="tj">
+ 
+
+</form>
+<script>
+
+$('.tj').on('click',function(){
+    $.ajax({
+        url:"{:url('index/tj')}",
+        type:'POST',
+        data:$("form").serialize(),
+        datatype:'json',
+        success:function(data){
+           console.log(data);
+        }
+    })    
+})
+
+</script>
+
+</body>
+</html>

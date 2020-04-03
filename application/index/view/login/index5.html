@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>登录</title>
+	<link rel="stylesheet" type="text/css" href="__STATIC__/home/css/default.css">
+    <link href="https://cdn.bootcss.com/layer/2.3/skin/layer.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+	<style type="text/css">
+	html,
+	body {
+	    height: 100%;
+	}
+	html {
+	    display: table;
+	    margin: auto;
+	}
+	body {
+	    display: table-cell;
+	    vertical-align: middle;
+	}
+
+	.margin {
+	  margin: 0 !important;
+	}
+	</style>
+</head>
+<body class="red">
+	<div id="login-page" class="row">
+	    <div class="col s12 z-depth-6 card-panel">
+	      <form class="login-form">
+	        <div class="row margin">
+	          <div class="input-field col s12">
+	            <i class="mdi-social-person-outline prefix"></i>
+	            <input class="validate user1" id="username" type="text" name="user1">
+	            <label for="username" class="center-align">账号</label>
+	          </div>
+	        </div>
+	        <div class="row margin">
+	          <div class="input-field col s12">
+	            <i class="mdi-action-lock-outline prefix"></i>
+	            <input class="pwd" id="password" type="password" name="pwd">
+	            <label for="password">密码</label>
+	          </div>
+	        </div>
+	        <div class="row">          
+	          <div class="input-field col s12 m12 l12  login-text"> 
+	              <input type="checkbox" id="remember-me" />
+	              <label for="remember-me">记住我</label>
+	          </div>
+	        </div>
+	        <div class="row">
+	          <div class="input-field col s12">
+	            <a class="btn waves-effect waves-light col s12 log">登　录</a>
+	          </div>
+	        </div>
+	        <div class="row">
+	          <div class="input-field col s6 m6 l6" style="margin-top: 20px;">
+	            <p class="margin medium-small"><a href="register.html">现在注册!</a></p>
+	          </div>
+	          <!-- <div class="input-field col s6 m6 l6">
+	              <p class="margin right-align medium-small"><a href="forgot-password.html">忘记密码?</a></p>
+	          </div>           -->
+
+	      </form>
+	    </div>
+	  </div>
+	  </div>
+	
+	<script src="https://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+  	<!--materialize js-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+	
+	<script>
+		$(document).ready(function(){
+			function alertl(content){
+			layer.tips(content,'.log', {
+				tips: [3,'#0EA7F1']
+			});
+			}
+
+
+			 // 登录
+
+		$(".log").click(function(){
+		var user = $('.user1').val();
+		var pass = $('.pwd').val();
+		if(user==''){
+			alertl("填写用户名");
+		}else{
+		$.ajax({
+			url:"{:url('login/log')}",
+			type:'POST',
+			data:$("#form1").serialize(),
+			datatype:'json',
+			success:function(data){
+				if(data.state==1){
+					alertl(data.info);
+					$(".user1").val("");
+					location.href="{:url('index/index')}"
+				}else{
+					alertl(data.info);
+				}
+			}
+		})    
+		}
+		})
+
+		})
+	</script>
+</body>
+</html>

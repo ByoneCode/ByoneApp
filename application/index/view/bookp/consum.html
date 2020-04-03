@@ -1,0 +1,285 @@
+{include file="public/seo"}
+
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+  <div class="mdui-container-fluid" style="padding: 0;">
+    <div class="mdui-toolbar mdui-color-theme mdui-shadow-5">
+      <a href="javascript:history.go(-1);" class="mdui-btn mdui-btn-icon"><i
+          class="mdui-icon material-icons">&#xe5c4;</i></a>
+      <span class="mdui-typo-title">{$app.title}</span>
+    </div>
+    <div class="card">
+      <ul class="mdui-list">
+        {volist name="list" id="vo"}
+        <li class="mdui-list-item">
+          <div class="mdui-list-item-content">
+            <div class="mdui-chip">
+              {if $vo.pay eq 'wxpay'}
+              <img class="mdui-chip-icon" src="__STATIC__/home/img/wxpay.png" />
+              {/if}
+              {if $vo.pay eq 'alipay'}
+              <img class="mdui-chip-icon" src="__STATIC__/home/img/alipay.png" />
+              {/if}
+              {if $vo.pay eq 'otherpay'}
+              <img class="mdui-chip-icon" src="__STATIC__/home/img/otherpay.png" />
+              {/if}
+              <span class="mdui-chip-title">本次消费{$vo.money}&yen;</span>
+            </div>
+            <p style="margin: 10px 0;">{$vo.content}</p>
+            <span class="votime">{$vo.time|date='Y-m-d h:i',###}</span>
+            <div>
+              <button
+                class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple mdui-float-right"
+                mdui-menu="{target: '#example-{$vo.id}'}">操作</button>
+              <ul class="mdui-menu" id="example-{$vo.id}">
+                <li class="mdui-menu-item">
+                  <a href="javascript:info({$vo.id});" class="mdui-ripple" mdui-dialog="{target: '#content-edit'}">
+                    <i class="mdui-menu-item-icon mdui-icon material-icons">edit</i>修改
+                  </a>
+                </li>
+                <li class="mdui-menu-item">
+                  <a href="javascript:{del({$vo.id})};" class="mdui-ripple">
+                    <i class="mdui-menu-item-icon mdui-icon material-icons">delete</i>删除
+                  </a>
+                </li>
+              </ul>
+            </div>
+        </li>
+        <li class="mdui-divider"></li>
+        {/volist}
+      </ul>
+
+
+
+    </div>
+
+  </div>
+  <button id="add" class="mdui-fab mdui-color-theme-accent mdui-ripple" mdui-dialog="{target: '#content-add'}"><i
+      class="mdui-icon material-icons">add</i></button>
+  <div class="mdui-dialog" id="content-add">
+    <!-- 弹窗添加 s-->
+    <div class="mdui-typo-display-1-opacity"><i class="mdui-icon material-icons">assignment</i>&nbsp;消费账单</div>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+      <label class="mdui-textfield-label">消费来源</label>
+      <textarea class="mdui-textfield-input" id="add-info"></textarea>
+    </div>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+      <label class="mdui-textfield-label">消费金额</label>
+      <input class="mdui-textfield-input" type="tel" name="money" />
+    </div>
+    <div class="mdui-col" style="text-align: center;">
+      <label class="mdui-radio">
+        <input type="radio" name="paytype" value="alipay" checked="checked" />
+        <i class="mdui-radio-icon"></i>
+        支付宝
+      </label>
+      <label class="mdui-radio">
+        <input type="radio" name="paytype" value="wxpay" />
+        <i class="mdui-radio-icon"></i>
+        微信
+      </label>
+      <label class="mdui-radio">
+        <input type="radio" name="paytype" value="otherpay" />
+        <i class="mdui-radio-icon"></i>
+        其他
+      </label>
+    </div>
+    <div class="mdui-hor">
+      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" mdui-dialog-close>取消</button>
+      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" mdui-dialog-confirm
+        id="add-tj">确定</button>
+    </div>
+  </div> <!-- 弹窗添加 e-->
+
+  <div class="mdui-dialog" id="content-edit">
+    <!-- 弹窗添加 s-->
+    <div class="mdui-typo-display-1-opacity"><i class="mdui-icon material-icons">assignment</i>&nbsp;消费账单</div>
+    <div class="mdui-textfield">
+      <label class="mdui-textfield-label">消费来源</label>
+      <textarea class="mdui-textfield-input" id="edit-info"></textarea>
+    </div>
+    <div class="mdui-textfield">
+      <label class="mdui-textfield-label">消费金额</label>
+      <input class="mdui-textfield-input" type="tel" name="edit-money" />
+    </div>
+    <div class="mdui-col" style="text-align: center;">
+      <label class="mdui-radio">
+        <input type="radio" name="edit-paytype" value="alipay" class="edit-radio" />
+        <i class="mdui-radio-icon"></i>
+        支付宝
+      </label>
+      <label class="mdui-radio">
+        <input type="radio" name="edit-paytype" value="wxpay" class="edit-radio" />
+        <i class="mdui-radio-icon"></i>
+        微信
+      </label>
+      <label class="mdui-radio">
+        <input type="radio" name="edit-paytype" value="otherpay" class="edit-radio" />
+        <i class="mdui-radio-icon"></i>
+        其他
+      </label>
+    </div>
+    <div class="mdui-hor">
+      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" mdui-dialog-close>取消</button>
+      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" mdui-dialog-confirm
+        id="edit-tj">修改</button>
+    </div>
+  </div> <!-- 弹窗添加 e-->
+  </div>
+
+  <script>
+    if ($(".mdui-list-item").length == 0) {
+      mdui.snackbar({
+        message: '你还未进行任何消费',
+        buttonText: '确定'
+      });
+    }
+    $("#add-tj").click(function () {   //添加数据
+      var id = "{$zid}"; //该日账本id
+      var content = $("#add-info").val(); //消费来源
+      var money = $('input[name="money"]').val(); //消费金额
+      var pay = $('input:radio[name="paytype"]:checked').val(); //支付类型
+      if (content == '' || money == '') {
+        mdui.snackbar({
+          message: '填写完整',
+          buttonText: '确定'
+        });
+        return false;
+      }
+      $.ajax({
+        url: "{:url('bookp/add_consum')}",
+        type: 'POST',
+        data: {
+          zid: id,
+          content: content,
+          money: money,
+          pay: pay
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.status == 1) {
+            mdui.snackbar({
+              message: data.info,
+              buttonText: '确定'
+            });
+            setTimeout(function () {
+              location.reload();
+            }, 1000);
+          } else {
+            mdui.snackbar({
+              message: data.info,
+              buttonText: '确定'
+            });
+          }
+        },
+        error: function () {
+          mdui.snackbar({
+            message: '添加出错',
+            buttonText: '确定'
+          });
+        }
+      })
+    })
+    var consum_id = 0;
+    function info(id) {
+      consum_id = id;
+      $.ajax({
+        url: "{:url('bookp/info_consum')}",
+        type: 'GET',
+        data: {
+          id: id
+        },
+        dataType: 'json',
+        success: function (data) {
+          $('.edit-radio').removeAttr("checked");
+          $("#edit-info").val(data.content);
+          $('input[name="edit-money"]').val(data.money);
+          $('.edit-radio[value="' + data.pay + '"]').attr("checked", 'checked');
+        },
+        error: function () {
+          mdui.snackbar({
+            message: '获取出错',
+            buttonText: '确定'
+          });
+        }
+      })
+    }
+    function del(id) {
+      $.ajax({
+        url: "{:url('bookp/del_consum')}",
+        type: 'POST',
+        data: {
+          id: id
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.status == 1) {
+            mdui.snackbar({
+              message: data.info,
+              buttonText: '确定'
+            });
+            setTimeout(function () {
+              location.reload();
+            }, 1000);
+          } else {
+            mdui.snackbar({
+              message: data.info,
+              buttonText: '确定'
+            });
+          }
+        },
+        error: function () {
+          mdui.snackbar({
+            message: '删除出错',
+            buttonText: '确定'
+          });
+        }
+      })
+    }
+
+    $("#edit-tj").click(function () {   //修改数据
+      var content = $("#edit-info").val(); //消费来源
+      var money = $('input[name="edit-money"]').val(); //消费金额
+      var pay = $('input:radio[name="edit-paytype"]:checked').val(); //支付类型
+      if (content == '' || money == '') {
+        mdui.snackbar({
+          message: '填写完整',
+          buttonText: '确定'
+        });
+        return false;
+      }
+      $.ajax({
+        url: "{:url('bookp/edit_consum')}",
+        type: 'POST',
+        data: {
+          id: consum_id,
+          content: content,
+          money: money,
+          pay: pay
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.status == 1) {
+            mdui.snackbar({
+              message: data.info,
+              buttonText: '确定'
+            });
+            setTimeout(function () {
+              location.reload();
+            }, 1000);
+          } else {
+            mdui.snackbar({
+              message: data.info,
+              buttonText: '确定'
+            });
+          }
+        },
+        error: function () {
+          mdui.snackbar({
+            message: '修改出错',
+            buttonText: '确定'
+          });
+        }
+      })
+    })
+  </script>
+</body>

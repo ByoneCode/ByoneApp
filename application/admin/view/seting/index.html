@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+        <link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+        <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
+    </head>
+    <body layadmin-themealias="default">
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+              <a href="">首页</a>
+              <a href="">设置</a>
+              <a>
+                <cite>系统基本设置</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+              <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+          </div>
+        <div class="layui-fluid">
+          <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">网站设置</div>
+                <div class="layui-card-body" pad15="">   
+                  <div class="layui-form" wid100="" lay-filter="">
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">网站名称</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="sitename" value="{$info.title}" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">注册码</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="domain" value="{$info.tion}" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">IP最大注册数</label>
+                      <div class="layui-input-inline" style="width: 80px;">
+                        <input type="text" name="cache" lay-verify="number|maxnum" value="{$info.ipmember}" class="layui-input">
+                      </div>
+                      <div class="layui-input-inline layui-input-company">个</div>
+                      <div class="layui-form-mid layui-word-aux">最小设置为2个</div>
+                    </div>
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">最大文件上传</label>
+                      <div class="layui-input-inline" style="width: 80px;">
+                        <input type="text" name="cache" lay-verify="number" value="2048" class="layui-input">
+                      </div>
+                      <div class="layui-input-inline layui-input-company">KB</div>
+                      <div class="layui-form-mid layui-word-aux">提示：1 M = 1024 KB</div>
+                    </div>
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">上传文件类型</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="cache" value="png|gif|jpg|jpeg|zip|rar" class="layui-input">
+                      </div>
+                    </div>
+                    
+                    <div class="layui-form-item layui-form-text">
+                      <label class="layui-form-label">首页标题</label>
+                      <div class="layui-input-block">
+                        <textarea name="title" class="layui-textarea">layuiAdmin 通用后台管理模板系统</textarea>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                      <label class="layui-form-label">META关键词</label>
+                      <div class="layui-input-block">
+                        <textarea name="keywords" class="layui-textarea" placeholder="多个关键词用英文状态 , 号分割"></textarea>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                      <label class="layui-form-label">META描述</label>
+                      <div class="layui-input-block">
+                        <textarea name="descript" class="layui-textarea">layuiAdmin 是 layui 官方出品的通用型后台模板解决方案，提供了单页版和 iframe 版两种开发模式。layuiAdmin 是目前非常流行的后台模板框架，广泛用于各类管理平台。</textarea>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                      <label class="layui-form-label">版权信息</label>
+                      <div class="layui-input-block">
+                        <textarea name="copyright" class="layui-textarea">© 2018 layui.com MIT license</textarea>
+                      </div>
+                    </div>
+                    <div class="layui-form-item">
+                      <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="save">确认保存</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <style id="LAY_layadmin_theme">.layui-side-menu,.layadmin-pagetabs .layui-tab-title li:after,.layadmin-pagetabs .layui-tab-title li.layui-this:after,.layui-layer-admin .layui-layer-title,.layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child{background-color:#20222A !important;}.layui-nav-tree .layui-this,.layui-nav-tree .layui-this>a,.layui-nav-tree .layui-nav-child dd.layui-this,.layui-nav-tree .layui-nav-child dd.layui-this a{background-color:#009688 !important;}.layui-layout-admin .layui-logo{background-color:#20222A !important;}</style>
+    </body>
+    <script>
+    layui.use(['laydate', 'form','layer'],
+        function() {
+            var laydate = layui.laydate
+            ,form = layui.form
+            ,layer = layui.layer;
+
+             //创建自定义规则
+             form.verify({
+                maxnum: function (value) {
+                    if (value < 2) {
+                        return '数值不得小于2';
+                    }
+                },
+            });
+            
+            form.on('submit(save)',
+            function (data) {
+              console.log(123);
+           
+
+            });
+        });
+
+    
+</script>
+
+</html>

@@ -1,0 +1,166 @@
+{include file="public/seo"}
+
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+
+    <div class="mdui-container-fluid" style="padding: 0;">
+
+       <div class="mdui-toolbar mdui-color-theme mdui-shadow-5">
+
+            <a href="javascript:history.go(-1);" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe5c4;</i></a>
+
+            <span class="mdui-typo-title">编辑会员</span>
+
+       </div>
+       <style>
+         .mdui-list-item-content{
+           padding-top: 5px;
+           padding-bottom: 5px;
+           line-height: 48px;
+         }
+         .mdui-list-item-content img{
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+         }
+         .mdui-list-item-content span{
+          font-size: 1rem;
+          float: right;
+          line-height: 48px;
+          color: #888;
+         }
+         .mdui-btn-block {
+          width: 90%;
+          margin: auto;
+          }
+       </style>
+       <div class="card">
+
+       <ul class="mdui-list">
+          <li class="mdui-list-item" id="cover">
+          <div class="mdui-list-item-content">
+            <img src="{$info.headimg|default='__STATIC__/home/img/tx.png'}" alt="头像" id="cover_img">
+            <span>修改头像</span>
+          </div>
+          <i class="mdui-list-item-icon mdui-icon material-icons">&#xe5cc;</i>
+          </li>
+          <li class="mdui-divider"></li>
+          <li class="mdui-list-item">
+            <div class="mdui-list-item-content">
+              用户名
+              <span>{$info.user}</span>
+            </div>
+          </li>
+          <li class="mdui-divider"></li>
+          <li class="mdui-list-item" mdui-dialog="{target: '#tc-nickname'}">
+            <div class="mdui-list-item-content">
+              昵称
+              <span id="edit_nickname">{if empty($info.nickname)}{$info.user}{else}{$info.nickname}{/if}</span>
+            </div>
+            <i class="mdui-list-item-icon mdui-icon material-icons">&#xe5cc;</i>
+          </li>
+          <li class="mdui-divider"></li>
+          <li class="mdui-list-item">
+            <div class="mdui-list-item-content">
+              注册时间
+              <span>{$info.time|date='Y-m-d H:i:s',###}</span>
+            </div>
+          </li>
+          <li class="mdui-divider"></li>
+       </ul>
+       <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" id="edit">修改</button>
+        </div>
+
+        
+    </div>
+
+    <div class="mdui-dialog" id="tc-nickname">
+      <div class="mdui-dialog-title">编辑昵称</div>
+      <div class="mdui-dialog-content">
+        <input class="mdui-textfield-input" id="val_nickname" type="text" placeholder="输入昵称" value="{$info.nickname}"/>
+      </div>
+      <div class="mdui-dialog-actions">
+        <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
+        <button class="mdui-btn mdui-ripple" mdui-dialog-confirm id="ok_nickname">确定</button>
+      </div>
+    </div>
+
+
+    <script>
+      var info = function(content){
+        mdui.snackbar({
+               message: content,
+               buttonText:'确定'
+        });
+      }
+
+
+      $("#ok_nickname").click(function(){
+         var nicknamee =  $("#val_nickname").val();
+         if(nicknamee.length>6){
+            info('长度不能超过六个字');
+         }else{
+            $('#edit_nickname').text(nicknamee);
+            nickname = nicknamee;
+         }
+      })
+
+      var path = '{$info.headimg}'
+      ,nickname = '{$info.nickname}';
+
+
+      layui.use(['upload'],function(){
+        var upload = layui.upload;
+         //执行实例
+        var uploadInst = upload.render({
+            elem: '#cover' //绑定元素
+            , url: '{:url("user/updata_headimg")}' //上传接口
+            , auto: true
+            , field: 'headimg'
+            // , bindAction: '#edit'
+            , before: function (obj) {
+                // console.log(obj);
+                obj.preview(function (index, file, result) {
+                    $('#cover_img').attr('src', result); //图片链接 base64
+                });
+            }
+            , done: function (res) {
+               info(res.info.msg);
+               path = res.info.path;
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+
+      })
+
+     $("#edit").click(function(){
+     $.ajax({
+        url:"{:url('user/edit_user')}",
+        type:'POST',
+        data:{
+          headimg:path,
+          nickname:nickname
+        },
+        datatype:'json',
+        success:function(data){
+           if(data.status == 1){
+             info(data.info);
+             setTimeout(function(){
+                location.href='{:url("index/user")}'
+             },1000);
+           }else{
+             info(data.info);
+           }
+
+        }
+
+    })    
+
+     })
+
+     
+
+    </script>
+
+</body>

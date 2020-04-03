@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>byone-页面管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+        <link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+        <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">页面管理</a>
+            <a>
+              <cite>页面列表</cite></a>
+          </span>
+          <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="key"  placeholder="请输入应用名" autocomplete="off" class="layui-input" id="key">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-header">
+                            <!-- <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button> -->
+                            <button class="layui-btn" onclick="xadmin.open('添加应用','{:url('page/page_add')}',600,600)"><i class="layui-icon"></i>添加</button>
+                        </div>
+                        <div class="layui-card-body layui-table-body layui-table-main">
+                            <table class="layui-table layui-form" id="ware_info" lay-filter="tableone">
+                                <thead>
+                                  <tr>
+                                    <!-- <th>
+                                      <input type="checkbox" lay-filter="checkall" name="" lay-skin="primary">
+                                    </th> -->
+                                    <th>ID</th>
+                                    <th>标题</th>
+                                    <th>副标题</th>
+                                    <th>封面</th>
+                                    <th>链接(控制器)</th>
+                                    <th>状态</th>
+                                    <th>排序</th>
+                                    <th>操作</th></tr>
+                                </thead>
+                                <tbody>
+                                  {volist name="list" id="vo"}
+                                  <tr>
+                                    <!-- <td>
+                                      <input type="checkbox" name="id" value="{$vo.id}"   lay-skin="primary"> 
+                                    </td> -->
+                                    <td>{$vo.id}</td>
+                                    <td>{$vo.title}</td>
+                                    <td>{$vo.subtitle}</td>
+                                    <td><img src="{$vo.img}"></td>
+                                    <td>{$vo.url}</td>
+                                    <td class="td-status">
+                                      {if $vo.status eq 1}
+                                      <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+                                      {else}
+                                      <span class="layui-btn layui-bg-black layui-btn-mini">已禁用</span>
+                                      {/if}
+                                    </td>
+                                    <td>{$vo.order}</td>
+                                    <td class="td-manage">
+                                      <a title="编辑" class="layui-btn"  onclick="xadmin.open('编辑应用','{:url('page/page_edit',['id'=>$vo.id])}',600,600)" href="javascript:;">
+                                        编辑
+                                      </a>
+                                      <a title="删除" class="layui-btn layui-bg-red" onclick="page_del(this,'{$vo.id}')" href="javascript:;">
+                                        删除
+                                      </a>
+                                    </td>
+                                  </tr>
+                                  {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="layui-card-body ">
+                            <div class="page">
+                                <div>
+                                 {$page}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </body>
+    <script>
+      layui.use(['form'],function(){
+        var form = layui.form;
+
+        form.on('submit(sreach)',function(data){
+          // location.href = '{:url("page/page_sreach")}'+'?key='+data.field.key;
+          $.ajax({
+            url:'{:url("page/page_list")}',
+            type:'GET',
+            data:{key:data.field.key},
+          })
+        })
+      })
+      /*用户-删除*/
+      function page_del(obj,id){
+          layer.confirm('确认要删除吗？', function (index) {
+          $.ajax({
+            url: '{:url("page/del")}',
+            type: 'POST',
+            data: {id:id},
+            dataType: 'JSON',
+            success: function (res) {
+              if (res.code == 1) {
+                $(obj).parents("tr").remove();
+                layer.msg(res.info, { icon: 1, time: 1000 });
+              } else {
+                layer.msg(res.info, {
+                  'icon': 2
+                })
+              }
+            }
+          })
+        });
+      }
+
+
+
+     
+    </script>
+</html>

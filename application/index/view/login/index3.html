@@ -1,0 +1,99 @@
+{include file="public/seo1"}
+<body>
+<link rel="stylesheet" href="__STATIC__/home/css/style.css">
+    <form method="POST" id="form" style="display: none;">
+       <h2>注册</h2>
+       <p><input type="text" placeholder="输入用户名" name="user" class="user"></p>
+       <p><input type="password" placeholder="输入密码" name="password" class="password"></p>
+       {if $tion.tion neq ''}
+       <p><input type="text" placeholder="内部注册码" name="tion" class="tion"></p>
+       {/if}
+       <p><input type="button" value="去登录" class="backlog"><input type="button" value="注册" class="reg"></p>
+    </form>
+    <form method="POST" id="form1">
+            <h2>登录</h2>
+            <p><input type="text" placeholder="输入用户名" name="user1" class="user1"></p>
+            <p><input type="text" placeholder="输入密码(未设置可为空)" name="pwd" class="pwd"></p>
+            <p><input type="button" value="去注册" class="backreg"><input type="button" value="登录" class="log"></p>
+    </form>
+<script>
+$(document).ready(function(){
+    function alertt(content){
+        layer.tips(content, '.reg', {
+            tips: [3,'#0EA7F1']
+        });
+    }
+    function alertl(content){
+        layer.tips(content, '.log', {
+            tips: [3,'#0EA7F1']
+        });
+    }
+    // 注册
+    $(".reg").click(function(){
+    var user = $('.user').val();
+    var tion = $('.tion').val();
+    var pass = $('.password').val();
+    var rule = /[\u4E00-\u9FA5]/;
+    if(rule.test(user)){
+        alertt("用户名不可输入中文");
+        return false;
+    }
+    if(user==''||tion==''||pass==''){
+        alertt("填写完整");
+    }else if(user.length<6){
+        alertt("账号长度大于6位数");
+    }else{
+       $.ajax({
+        url:"{:url('login/reg')}",
+        type:'POST',
+        data:$("#form").serialize(),
+        datatype:'json',
+        success:function(data){
+            if(data.state==1){
+                alertt(data.info);
+                $(".user").val("");
+            }else{
+                alertt(data.info);
+                $(".user").val("");
+            }
+        }
+    })    
+    }
+    })
+    // 登录
+    $(".log").click(function(){
+    var user = $('.user1').val();
+    var pass = $('.pwd').val();
+    if(user==''){
+        alertl("填写用户名");
+    }else{
+       $.ajax({
+        url:"{:url('login/log')}",
+        type:'POST',
+        data:$("#form1").serialize(),
+        datatype:'json',
+        success:function(data){
+            if(data.state==1){
+                alertl(data.info);
+                $(".user1").val("");
+                location.href="{:url('index/index')}"
+            }else{
+                alertl(data.info);
+            }
+        }
+    })    
+    }
+    })
+
+    $('.backlog').click(function(){
+        $('#form').hide();
+        $("#form1").show();
+    })
+    $('.backreg').click(function(){
+        $('#form').show();
+        $("#form1").hide();
+    })
+})
+</script>
+</body>
+</html>
