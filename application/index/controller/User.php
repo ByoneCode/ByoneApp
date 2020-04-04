@@ -13,6 +13,7 @@ class User extends Byse
        $info = Db::name('user')
        ->where('id',$id)
        ->find();
+       $this->assign('title',"编辑会员");
        $this->assign('info',$info);
        return $this->fetch();
     }
