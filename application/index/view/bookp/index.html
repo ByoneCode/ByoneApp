@@ -8,8 +8,9 @@
        <div class="card">
        <ul class="mdui-list">
             {volist name="list" id="vo"}
-               <li class="mdui-list-item" onclick="location.href='{:url('bookp/days',['id'=>$vo.id])}'">
-               <div class="mdui-list-item-content">{$vo.title}</div>
+               <li class="mdui-list-item changdel">
+               <div class="mdui-list-item-content" onclick="location.href='{:url('bookp/days',['id'=>$vo.id])}'">{$vo.title}</div>
+               <i onclick="delAll({$vo.id})" class="mdui-list-item-icon mdui-icon material-icons">&#xe872;</i>
                <i class="mdui-list-item-icon mdui-icon material-icons">&#xe5cc;</i>
                </li>
                <li class="mdui-divider"></li>
@@ -18,7 +19,7 @@
         </div>
         <button id="add" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">add</i></button>
     </div>
-
+   
     <script>
      $("#add").click(function(){
      $.ajax({
@@ -44,6 +45,35 @@
         }
     })    
      })
-     
+   
+
+     function delAll(id){
+      $.ajax({
+        url:"{:url('bookp/del_index')}",
+        type:'POST',
+        data:{id:id},
+        datatype:'json',
+        success:function(data){
+           if(data.status == 1){
+             mdui.snackbar({
+               message: data.info,
+               buttonText: '确定'
+             });
+             setTimeout(function(){
+               location.reload();
+             },1000);
+           }else{
+             mdui.snackbar({
+               message: data.info,
+               buttonText: '确定'
+             });
+           }
+           return false;
+        }
+     })
+
+    }
+
+
     </script>
 </body>

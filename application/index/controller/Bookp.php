@@ -196,4 +196,30 @@ class Bookp extends Byse
          return ['status'=>0,'info'=>'修改错误'];
        }
    }
+
+   public function del_index(){
+      $id = input('id');
+
+      $sql = "DELETE a.*,b.* FROM by_bookkp AS a LEFT JOIN by_consum AS b ON b.zid=a.id WHERE a.id=$id OR a.fatday=".$id;
+      $return = Db::execute($sql);  //多表删除
+        if($return){
+            return ['status'=>1,'info'=>'删除成功'];
+         }else{
+            return ['status'=>0,'info'=>'删除错误','error'=>$return];
+         }
+   }
+
+
+   public function del_days(){
+      $id = input('id');
+
+      $sql = "DELETE a.*,b.* FROM by_bookkp AS a LEFT JOIN by_consum AS b ON b.zid=a.id WHERE a.id=".$id;
+      $return = Db::execute($sql);  //多表删除
+        if($return){
+            return ['status'=>1,'info'=>'删除成功'];
+         }else{
+            return ['status'=>0,'info'=>'删除错误','error'=>$return];
+         }
+      
+   }
 }
